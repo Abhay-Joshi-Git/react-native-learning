@@ -2,10 +2,19 @@ import React from 'react';
 import {
     View,
     Text,
-    StyleSheet
+    StyleSheet,
+    ListView
 } from 'react-native';
 
 export default class DepartmentList extends React.Component {
+    constructor(props) {
+        super();
+        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.state ={
+            dataSource: ds.cloneWithRows(props.departments)
+        }
+    }
+
     render() {
         return (
             <View style={styles.mainContainer}>
@@ -14,21 +23,18 @@ export default class DepartmentList extends React.Component {
                         Department List
                     </Text>
                 </View>
-                {this.props.departments.map(item => {
-                    return (
-                        <View
-                            key={item.name}
-                            style={styles.itemContainer}
-                        >
-                            <Text>
-                                Name: {item.name}
-                            </Text>
-                            <Text>
-                                HOD: {item.hod}
-                            </Text>
-                        </View>
-                    )
-                })}
+                <ListView
+                    dataSource={this.state.dataSource}
+                    renderRow={item => {
+                        return (
+                            <View style={styles.itemContainer}>
+                                <Text>Name:  {item.name}</Text>
+                                <Text>HOD: {item.hod} </Text>
+                            </View>
+                        )
+                    }}
+                ></ListView>
+
             </View>
         )
     }
