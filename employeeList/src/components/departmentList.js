@@ -57,9 +57,10 @@ export default class DepartmentList extends React.Component {
 
     onDepartmentPress(department) {
         console.log('on Department press', department);
+
         this.props.navigator.push({
             name: 'employees',
-            employees: this.props.route.employees
+            employees: this.props.route.employees.filter(item => item.department === department.name)
         })
     }
 }

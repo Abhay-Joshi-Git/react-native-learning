@@ -36,13 +36,29 @@ export default class EmployeeList extends React.Component {
                         </Text>
                     </View>
                 </View>
+                {this.getEmployeeListView()}
+            </View>
+        )
+    }
+
+    getEmployeeListView() {
+        if (this.props.route.employees.length <= 0) {
+            return (
+                <View style={{alignItems: 'center'}}>
+                    <Text style={[styles.label, styles.textFont]}>
+                        No employees found!!
+                    </Text>                    
+                </View>
+            );
+        } else {
+            return (
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={this.renderEmployeeRow.bind(this)}
-                >
+                    >
                 </ListView>
-            </View>
-        )
+            );
+        }
     }
 
     onBackButtonPressed() {
