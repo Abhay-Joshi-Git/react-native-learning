@@ -15,6 +15,7 @@ export default class EmployeeList extends React.Component {
         super();
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
+            employeesData: props.route.employees,
             dataSource: ds.cloneWithRows(props.route.employees)
         }
     }
@@ -37,8 +38,38 @@ export default class EmployeeList extends React.Component {
                     </View>
                 </View>
                 {this.getEmployeeListView()}
+                <TouchableHighlight
+                    style={styles.footer}
+                    onPress={this.onAddEmployeePress.bind(this)}
+                    underlayColor='gray'
+                >
+                    <View>
+                        <Text style={styles.footerIconText}> {'+'} </Text>
+                    </View>
+                </TouchableHighlight>
             </View>
         )
+    }
+
+    onAddEmployeePress() {
+        this.props.navigator.push({
+            name: 'employeeDetails',
+            employee: {
+                department: this.props.route.department
+            },
+            onSaveEmployee: this.onAddNewEmployee.bind(this)
+        });
+    }
+
+    onAddNewEmployee(employee) {
+        var updatedData = [
+            ...this.state.employeesData,
+            employee
+        ];
+        this.setState({
+            employeesData: updatedData,
+            dataSource: this.state.dataSource.cloneWithRows(updatedData)
+        })
     }
 
     getEmployeeListView() {
@@ -47,7 +78,7 @@ export default class EmployeeList extends React.Component {
                 <View style={{alignItems: 'center'}}>
                     <Text style={[styles.label, styles.textFont]}>
                         No employees found!!
-                    </Text>                    
+                    </Text>
                 </View>
             );
         } else {
@@ -62,6 +93,10 @@ export default class EmployeeList extends React.Component {
     }
 
     onBackButtonPressed() {
+        this.props.route.updateEmployees({
+            department: this.props.route.department,
+            employees: this.state.employeesData
+        })
         this.props.navigator.pop();
     }
 

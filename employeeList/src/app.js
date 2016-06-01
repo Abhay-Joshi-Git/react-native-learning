@@ -7,10 +7,12 @@ import {
 import departments from '../mockData/departmentList.js';
 import employees from '../mockData/employeeList.js';
 import EmployeeList from './components/employeeList.js';
+import EmployeeDetails from './components/employeeDetails.js';
 
 var routes = {
     departments: DepartmentList,
-    employees: EmployeeList
+    employees: EmployeeList,
+    employeeDetails: EmployeeDetails
 }
 
 export default class App extends React.Component {

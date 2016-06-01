@@ -14,6 +14,7 @@ export default class DepartmentList extends React.Component {
         super();
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
+            employees: [...props.route.employees],
             dataSource: ds.cloneWithRows(props.route.departments)
         }
     }
@@ -60,7 +61,18 @@ export default class DepartmentList extends React.Component {
 
         this.props.navigator.push({
             name: 'employees',
-            employees: this.props.route.employees.filter(item => item.department === department.name)
+            department: department.name,
+            employees: this.state.employees.filter(item => item.department === department.name),
+            updateEmployees: (data) => this.updateEmployees(data, department.name)
+        })
+    }
+
+    updateEmployees(data, department) {
+        this.setState({
+            employees: [
+                ...this.state.employees.filter(item => item.department != department),
+                ...data.employees
+            ]
         })
     }
 }
