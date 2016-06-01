@@ -7,6 +7,7 @@ import {
     TouchableHighlight
 } from 'react-native';
 import _ from 'lodash';
+import listStyle from '../CommonStyles/list.js';
 
 export default class DepartmentList extends React.Component {
     constructor(props) {
@@ -21,7 +22,7 @@ export default class DepartmentList extends React.Component {
         return (
             <View style={styles.mainContainer}>
                 <View style={{alignItems: 'center'}}>
-                    <Text style={styles.header}>
+                    <Text style={styles.headerText}>
                         Department List
                     </Text>
                 </View>
@@ -54,36 +55,13 @@ export default class DepartmentList extends React.Component {
         )
     }
 
-    onDepartmentPress(depatment) {
-        console.log('on Department press', depatment);
+    onDepartmentPress(department) {
+        console.log('on Department press', department);
+        this.props.navigator.push({
+            name: 'employees',
+            employees: this.props.route.employees
+        })
     }
 }
 
-var styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        alignItems: 'stretch'
-    },
-    itemContainer: {
-        height: 60,
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        paddingLeft: 5,
-        marginBottom: 2,
-        backgroundColor: 'rgb(240, 240, 240)'
-    },
-    header: {
-        fontSize: 30,
-        marginBottom: 5
-    },
-    labelRow: {
-        flexDirection: 'row'
-    },
-    label: {
-        fontWeight: 'bold'
-    },
-    textFont: {
-        fontSize: 18,
-        marginLeft: 5
-    }
-})
+var styles = StyleSheet.create(listStyle);
