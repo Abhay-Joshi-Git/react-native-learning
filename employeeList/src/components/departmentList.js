@@ -4,9 +4,9 @@ import {
     Text,
     StyleSheet,
     ListView,
-    TouchableHighlight,
-    TouchableNativeFeedback
+    TouchableHighlight
 } from 'react-native';
+import _ from 'lodash';
 
 export default class DepartmentList extends React.Component {
     constructor(props) {
@@ -43,37 +43,16 @@ export default class DepartmentList extends React.Component {
                 <View style={styles.itemContainer}>
                     <View style={styles.labelRow}>
                         <Text style={[styles.label, styles.textFont]}>Name:</Text>
-                        <Text style={styles.textFont}>{item.name}</Text>
+                        <Text style={styles.textFont}>{_.capitalize(item.name)}</Text>
                     </View>
                     <View style={styles.labelRow}>
-                        <Text style={styles.label}>HOD:</Text>
-                        <Text>{item.hod}</Text>
+                        <Text style={[styles.label, styles.textFont]}>HOD:</Text>
+                        <Text style={styles.textFont}>{item.hod}</Text>
                     </View>
                 </View>
             </TouchableHighlight>
         )
     }
-
-    renderDepartmentRowWithTouchableNativeFeedback(item) {
-        return (
-            <TouchableNativeFeedback
-                onPress={this.onDepartmentPress.bind(this)}
-                background={TouchableNativeFeedback.Ripple('gray')}
-            >
-                <View style={styles.itemContainer}>
-                    <View style={styles.labelRow}>
-                        <Text style={[styles.label, styles.textFont]}>Name:</Text>
-                        <Text style={styles.textFont}>{item.name}</Text>
-                    </View>
-                    <View style={styles.labelRow}>
-                        <Text style={styles.label}>HOD:</Text>
-                        <Text>{item.hod}</Text>
-                    </View>
-                </View>
-            </TouchableNativeFeedback>
-        )
-    }
-
 
     onDepartmentPress(depatment) {
         console.log('on Department press', depatment);
@@ -88,16 +67,18 @@ var styles = StyleSheet.create({
         alignItems: 'stretch'
     },
     itemContainer: {
-        height: 50,
+        height: 60,
         justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 2,
-        borderRadius: 5,
-        borderColor: 'rgb(0, 200, 200)',
-        backgroundColor: 'white'
+        alignItems: 'flex-start',
+        borderWidth: 1,
+        borderRadius: 2,
+        borderColor: 'rgb(0, 100, 100)',
+        backgroundColor: 'white',
+        paddingLeft: 5
     },
     header: {
-        fontSize: 30
+        fontSize: 30,
+        marginBottom: 5
     },
     labelRow: {
         flexDirection: 'row'
@@ -106,6 +87,7 @@ var styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     textFont: {
-        fontSize: 18
+        fontSize: 18,
+        marginLeft: 5
     }
 })
