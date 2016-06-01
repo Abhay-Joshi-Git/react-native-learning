@@ -12,8 +12,8 @@ export default class DepartmentList extends React.Component {
     constructor(props) {
         super();
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.state ={
-            dataSource: ds.cloneWithRows(props.departments)
+        this.state = {
+            dataSource: ds.cloneWithRows(props.route.departments)
         }
     }
 
@@ -59,8 +59,6 @@ export default class DepartmentList extends React.Component {
     }
 }
 
-
-
 var styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
@@ -70,11 +68,9 @@ var styles = StyleSheet.create({
         height: 60,
         justifyContent: 'center',
         alignItems: 'flex-start',
-        borderWidth: 1,
-        borderRadius: 2,
-        borderColor: 'rgb(0, 100, 100)',
-        backgroundColor: 'white',
-        paddingLeft: 5
+        paddingLeft: 5,
+        marginBottom: 2,
+        backgroundColor: 'rgb(240, 240, 240)'
     },
     header: {
         fontSize: 30,
