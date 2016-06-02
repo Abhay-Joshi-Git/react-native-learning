@@ -8,8 +8,10 @@ import {
     TouchableHighlight
 } from 'react-native';
 import commonStyles from '../CommonStyles/common.js';
+import { connect } from 'react-redux';
+import * as actions from '../../redux/actions';
 
-export default class EmployeeDetails extends React.Component {
+class EmployeeDetails extends React.Component {
     constructor(props) {
         super();
         var item = props.route.employee;
@@ -71,8 +73,8 @@ export default class EmployeeDetails extends React.Component {
     }
 
     onSavePress() {
-        this.props.route.onSaveEmployee(this.state.employee);
         this.props.navigator.pop();
+        this.props.addEmployee(this.state.employee);
     }
 
     onNameChange(text) {
@@ -112,3 +114,8 @@ var styles = StyleSheet.create({
         fontSize: 15
     }
 })
+
+export default connect(
+    null,
+    { addEmployee: actions.addEmployee }
+)(EmployeeDetails)

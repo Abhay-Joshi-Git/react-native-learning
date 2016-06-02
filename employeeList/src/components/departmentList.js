@@ -8,14 +8,14 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 import listStyle from '../CommonStyles/list.js';
+import { connect } from 'react-redux';
 
-export default class DepartmentList extends React.Component {
+class DepartmentList extends React.Component {
     constructor(props) {
         super();
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            employees: [...props.route.employees],
-            dataSource: ds.cloneWithRows(props.route.departments)
+            dataSource: ds.cloneWithRows(props.departments)
         }
     }
 
@@ -57,24 +57,24 @@ export default class DepartmentList extends React.Component {
     }
 
     onDepartmentPress(department) {
-        console.log('on Department press', department);
-
         this.props.navigator.push({
             name: 'employees',
-            department: department.name,
-            employees: this.state.employees.filter(item => item.department === department.name),
-            updateEmployees: (data) => this.updateEmployees(data, department.name)
-        })
-    }
-
-    updateEmployees(data, department) {
-        this.setState({
-            employees: [
-                ...this.state.employees.filter(item => item.department != department),
-                ...data.employees
-            ]
+            filter: {
+                department: department.name,
+            }
         })
     }
 }
 
 var styles = StyleSheet.create(listStyle);
+
+
+const mapStateToProps = (state) =>  {
+    return {
+        departments: state.departments
+    }
+}
+
+export default connect(
+    mapStateToProps
+)(DepartmentList)

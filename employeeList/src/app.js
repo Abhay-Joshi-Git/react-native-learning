@@ -1,13 +1,12 @@
 import React from 'react';
-import DepartmentList from './components/departmentList.js';
 import {
     View,
-    Navigator
+    Navigator,
+    Text
 } from 'react-native';
-import departments from '../mockData/departmentList.js';
-import employees from '../mockData/employeeList.js';
 import EmployeeList from './components/employeeList.js';
 import EmployeeDetails from './components/employeeDetails.js';
+import DepartmentList from './components/departmentList.js';
 
 var routes = {
     departments: DepartmentList,
@@ -24,11 +23,7 @@ export default class App extends React.Component {
     render() {
         return (
             <Navigator
-                initialRoute={{
-                    name: 'departments',
-                    departments: departments,
-                    employees: employees
-                }}
+                initialRoute={{name: 'departments'}}
                 renderScene={this.renderScene}
             />
         );

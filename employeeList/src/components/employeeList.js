@@ -8,16 +8,38 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 import listStyle from '../CommonStyles/list.js';
+import { connect } from 'react-redux';
+import { addEmployee } from '../../redux/actions';
 
-
-export default class EmployeeList extends React.Component {
+class EmployeeList extends React.Component {
     constructor(props) {
         super();
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        var filteredData = this.getFilteredEmployeesData(props)
         this.state = {
-            employeesData: props.route.employees,
-            dataSource: ds.cloneWithRows(props.route.employees)
+            employeesFilteredData: filteredData,
+            dataSource: ds.cloneWithRows(filteredData)
         }
+    }
+
+    getFilteredEmployeesData(props) {
+        if (props.route && props.route.filter) {
+            var filter = props.route.filter;
+            if (filter.department) {
+                return props.employees.filter(item => {
+                    return item.department === filter.department
+                })
+            }
+        }
+        return props.employees;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        var filteredData = this.getFilteredEmployeesData(nextProps);
+        this.setState({
+            employeesFilteredData: filteredData,
+            dataSource: this.state.dataSource.cloneWithRows(filteredData)
+        })
     }
 
     render() {
@@ -52,28 +74,20 @@ export default class EmployeeList extends React.Component {
     }
 
     onAddEmployeePress() {
+        // this.props.addEmployee({
+        //     name: 'Tom',
+        //     department: 'manufacturing'
+        // });
         this.props.navigator.push({
             name: 'employeeDetails',
             employee: {
-                department: this.props.route.department
-            },
-            onSaveEmployee: this.onAddNewEmployee.bind(this)
+                department: (this.props.route && this.props.route.filter) ? this.props.route.filter.department: ''
+            }
         });
     }
 
-    onAddNewEmployee(employee) {
-        var updatedData = [
-            ...this.state.employeesData,
-            employee
-        ];
-        this.setState({
-            employeesData: updatedData,
-            dataSource: this.state.dataSource.cloneWithRows(updatedData)
-        })
-    }
-
     getEmployeeListView() {
-        if (this.props.route.employees.length <= 0) {
+        if (this.state.employeesFilteredData.length <= 0) {
             return (
                 <View style={{alignItems: 'center'}}>
                     <Text style={[styles.label, styles.textFont]}>
@@ -93,10 +107,6 @@ export default class EmployeeList extends React.Component {
     }
 
     onBackButtonPressed() {
-        this.props.route.updateEmployees({
-            department: this.props.route.department,
-            employees: this.state.employeesData
-        })
         this.props.navigator.pop();
     }
 
@@ -126,3 +136,15 @@ export default class EmployeeList extends React.Component {
 }
 
 var styles = StyleSheet.create(listStyle);
+
+const mapStateToProps = (state) => {
+    return {
+        employees: state.employees,
+        departments: state.departments
+    }
+};
+
+export default connect(
+    mapStateToProps,
+    { addEmployee }
+)(EmployeeList)
