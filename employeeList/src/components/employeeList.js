@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     View,
-    ListView,
     TouchableHighlight,
     Text,
     StyleSheet
@@ -14,11 +13,9 @@ import { addEmployee } from '../../redux/actions';
 class EmployeeList extends React.Component {
     constructor(props) {
         super();
-        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         var filteredData = this.getFilteredEmployeesData(props)
         this.state = {
-            employeesFilteredData: filteredData,
-            dataSource: ds.cloneWithRows(filteredData)
+            employeesFilteredData: filteredData
         }
     }
 
@@ -37,8 +34,7 @@ class EmployeeList extends React.Component {
     componentWillReceiveProps(nextProps) {
         var filteredData = this.getFilteredEmployeesData(nextProps);
         this.setState({
-            employeesFilteredData: filteredData,
-            dataSource: this.state.dataSource.cloneWithRows(filteredData)
+            employeesFilteredData: filteredData
         })
     }
 
@@ -97,11 +93,9 @@ class EmployeeList extends React.Component {
             );
         } else {
             return (
-                <ListView
-                    dataSource={this.state.dataSource}
-                    renderRow={this.renderEmployeeRow.bind(this)}
-                    >
-                </ListView>
+                <View style={styles.mainContainer}>
+                    {this.state.employeesFilteredData.map(this.renderEmployeeRow.bind(this))}
+                </View>
             );
         }
     }
