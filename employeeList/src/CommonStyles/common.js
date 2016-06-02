@@ -33,7 +33,7 @@ export default {
         fontWeight: 'bold'
     },
     footer: {
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center'
     },
     footerIconText: {

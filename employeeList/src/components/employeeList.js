@@ -10,6 +10,18 @@ import _ from 'lodash';
 import listStyle from '../CommonStyles/list.js';
 import { connect } from 'react-redux';
 import { addEmployee } from '../../redux/actions';
+import {
+  MKButton,
+  MKColor,
+} from 'react-native-material-kit';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const FlatButton = MKButton.flatButton()
+  .withText('BUTTON')
+  .build();
+const ColoredFab = MKButton.coloredFab()
+   .withStyle()
+   .build();
 
 class EmployeeList extends React.Component {
     constructor(props) {
@@ -44,7 +56,7 @@ class EmployeeList extends React.Component {
 
     render() {
         return (
-            <View style={styles.mainContainer}>
+            <View>
                 <View style={styles.header}>
                     <TouchableHighlight
                      style={styles.headerIconContainer}
@@ -66,7 +78,9 @@ class EmployeeList extends React.Component {
                     underlayColor='gray'
                 >
                     <View>
-                        <Text style={styles.footerIconText}> {'+'} </Text>
+                        <ColoredFab>
+                            <Icon name='plus' size={30} color='lime' />
+                        </ColoredFab>
                     </View>
                 </TouchableHighlight>
             </View>
