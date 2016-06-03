@@ -38,7 +38,8 @@ export default {
     },
     headerTextContainer: {
         flex: 15,
-        alignItems: 'center'
+        alignItems: 'center',
+        height: 50
     },
     headerIconContainer: {
         flex: 1,
@@ -60,5 +61,15 @@ export default {
     },
     fab: {
         ...fab
+    },
+    input: {
+        padding: 4,
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 5,
+        margin: 5,
+        width: 250,
+        alignSelf: 'center'
     }
 }

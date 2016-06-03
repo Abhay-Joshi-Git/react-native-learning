@@ -107,16 +107,6 @@ class EmployeeDetails extends React.Component {
 
 var styles = StyleSheet.create({
     ...commonStyles,
-    input: {
-        padding: 4,
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        borderRadius: 5,
-        margin: 5,
-        width: 200,
-        alignSelf: 'center'
-    },
     footerIconText: {
         ...commonStyles.footerIconText,
         fontSize: 15

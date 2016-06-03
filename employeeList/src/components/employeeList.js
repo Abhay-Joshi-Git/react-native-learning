@@ -27,12 +27,15 @@ class EmployeeList extends React.Component {
         }
     }
 
-    getFilteredEmployeesData(props) {
+    getFilteredEmployeesData(props, searchEmployeeText) {
         if (props.route && props.route.filter) {
             var filter = props.route.filter;
             if (filter.department) {
                 return props.employees.filter(item => {
-                    return item.department === filter.department
+                    return ((item.department === filter.department) &&
+                        (!(searchEmployeeText) ||
+                            item.name.includes(searchEmployeeText))
+                    )
                 })
             }
         }
@@ -40,7 +43,11 @@ class EmployeeList extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        var filteredData = this.getFilteredEmployeesData(nextProps);
+        this.setFilteredEmployeeState(nextProps, this.state.searchEmployeeText)
+    }
+
+    setFilteredEmployeeState(props, searchEmployeeText) {
+        var filteredData = this.getFilteredEmployeesData(props, searchEmployeeText);
         this.setState({
             employeesFilteredData: filteredData,
             dataSource: this.state.dataSource.cloneWithRows(filteredData)
@@ -64,13 +71,10 @@ class EmployeeList extends React.Component {
                         />
                     </View>
                     <View style={styles.headerTextContainer}>
-                        <Text style={styles.headerText}>
-                            Employee List
-                        </Text>
+                        {this.getHeaderTextUI()}
                     </View>
                     {this.getSeatchIconUI()}
                 </View>
-                {this.getSearchBoxUI()}
                 {this.getEmployeeListView()}
                 <ColoredFab
                     onPress={this.onAddEmployeePress.bind(this)}
@@ -109,7 +113,19 @@ class EmployeeList extends React.Component {
     onSearchPressed() {
         this.setState({
             searchBoxShowing: true
-        })
+        });
+    }
+
+    getHeaderTextUI() {
+        if (this.state.searchBoxShowing) {
+            return this.getSearchBoxUI()
+        } else {
+            return (
+                <Text style={styles.headerText}>
+                    Employee List
+                </Text>
+            )
+        }
     }
 
     getSearchBoxUI() {
@@ -120,6 +136,9 @@ class EmployeeList extends React.Component {
                         autoFocus={true}
                         placeholder={'Search Employee...'}
                         onChangeText={this.onSeachTextChange.bind(this)}
+                        style={[styles.headerText, styles.input, {
+                            fontSize: 20
+                        }]}
                     />
                 </View>
             )
@@ -159,11 +178,21 @@ class EmployeeList extends React.Component {
     }
 
     onSeachTextChange(text) {
-        console.log('search change...', text)
+        this.setState({
+            searchEmployeeText: text
+        });
+        this.setFilteredEmployeeState(this.props, text)
     }
 
     onBackButtonPressed() {
-        this.props.navigator.pop();
+        if (this.state.searchBoxShowing) {
+            this.setState({
+                searchBoxShowing: false,
+                searchEmployeeText: ''
+            })
+        } else {
+            this.props.navigator.pop();
+        }
     }
 
     renderEmployeeRow(item) {
