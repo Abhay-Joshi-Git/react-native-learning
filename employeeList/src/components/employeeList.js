@@ -4,6 +4,7 @@ import {
     ListView,
     TouchableHighlight,
     Text,
+    TextInput,
     StyleSheet
 } from 'react-native';
 import _ from 'lodash';
@@ -21,7 +22,8 @@ class EmployeeList extends React.Component {
         var filteredData = this.getFilteredEmployeesData(props)
         this.state = {
             employeesFilteredData: filteredData,
-            dataSource: ds.cloneWithRows(filteredData)
+            dataSource: ds.cloneWithRows(filteredData),
+            searchBoxShowing:  false
         }
     }
 
@@ -66,7 +68,9 @@ class EmployeeList extends React.Component {
                             Employee List
                         </Text>
                     </View>
+                    {this.getSeatchIconUI()}
                 </View>
+                {this.getSearchBoxUI()}
                 {this.getEmployeeListView()}
                 <ColoredFab
                     onPress={this.onAddEmployeePress.bind(this)}
@@ -81,6 +85,47 @@ class EmployeeList extends React.Component {
                 </ColoredFab>
             </View>
         )
+    }
+
+    getSeatchIconUI() {
+        return (
+            <View style={styles.headerIconContainer}>
+                {
+                    !this.state.searchBoxShowing ?
+                    <Icon
+                        name='search'
+                        size={18}
+                        color='white'
+                        onPress={this.onSearchPressed.bind(this)}
+                        style={{
+                            marginRight: 3
+                        }}
+                    /> : null
+                }
+            </View>
+        )
+    }
+
+    onSearchPressed() {
+        this.setState({
+            searchBoxShowing: true
+        })
+    }
+
+    getSearchBoxUI() {
+        if (this.state.searchBoxShowing) {
+            return (
+                <View>
+                    <TextInput
+                        autoFocus={true}
+                        placeholder={'Search Employee...'}
+                        onChangeText={this.onSeachTextChange.bind(this)}
+                    />
+                </View>
+            )
+        } else {
+            return null
+        }
     }
 
     onAddEmployeePress() {
@@ -111,6 +156,10 @@ class EmployeeList extends React.Component {
                 </ListView>
             );
         }
+    }
+
+    onSeachTextChange(text) {
+        console.log('search change...', text)
     }
 
     onBackButtonPressed() {
