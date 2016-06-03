@@ -22,10 +22,12 @@ class DepartmentList extends React.Component {
     render() {
         return (
             <View style={styles.mainContainer}>
-                <View style={{alignItems: 'center'}}>
+                <View style={styles.header}>
+                <View style={styles.headerTextContainer}>
                     <Text style={styles.headerText}>
                         Department List
                     </Text>
+                </View>
                 </View>
                 <ListView
                     dataSource={this.state.dataSource}

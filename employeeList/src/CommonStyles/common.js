@@ -1,3 +1,17 @@
+import * as MK from 'react-native-material-kit';
+
+const { MKColor } = MK;
+
+export const MKTheme = {
+  primaryColor: MKColor.Teal,
+  accentColor: MKColor.Red,
+};
+
+const fab = {
+    height: 50,
+    width: 50
+}
+
 export default {
     mainContainer: {
         flex: 1,
@@ -5,7 +19,8 @@ export default {
     },
     headerText: {
         fontSize: 30,
-        marginBottom: 5
+        marginBottom: 5,
+        color: 'white'
     },
     labelRow: {
         flexDirection: 'row'
@@ -18,7 +33,8 @@ export default {
         marginLeft: 5
     },
     header: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        backgroundColor: 'teal'
     },
     headerTextContainer: {
         flex: 15,
@@ -32,15 +48,17 @@ export default {
         fontSize: 20,
         fontWeight: 'bold'
     },
-    footer: {
-        justifyContent: 'center',
-        alignItems: 'center'
+    footerFab: {
+        position: 'absolute',
+        bottom: 30,
+        right: 30,
+        ...fab
     },
-    footerIconText: {
-        fontSize: 90,
-        fontWeight: 'bold'
+    fabIcon: {
+        left: 12.5,
+        top: 10
     },
-    footerIconWrapper: {
-        borderWidth: 1
+    fab: {
+        ...fab
     }
 }

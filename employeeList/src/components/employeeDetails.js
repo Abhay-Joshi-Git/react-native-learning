@@ -10,6 +10,13 @@ import {
 import commonStyles from '../CommonStyles/common.js';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions';
+import _ from 'lodash';
+import { MKButton } from 'react-native-material-kit';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const ColoredFab = MKButton.accentColoredFab()
+   .withStyle()
+   .build();
 
 class EmployeeDetails extends React.Component {
     constructor(props) {
@@ -45,7 +52,7 @@ class EmployeeDetails extends React.Component {
                     </View>
                     <View style={styles.labelRow}>
                         <TextInput
-                            value={this.state.employee.department}
+                            value={_.capitalize(this.state.employee.department)}
                             style={styles.input}
                             editable={false}
                             placeholder={this.state.employee.department ?
@@ -57,16 +64,17 @@ class EmployeeDetails extends React.Component {
                         alignItems: 'center',
                         marginTop: 10
                     }}>
-                    <TouchableHighlight
+                    <ColoredFab
                         onPress={this.onSavePress.bind(this)}
-                        underlayColor='gray'
-                        style={{
-                            borderWidth: 1,
-                            borderRadius: 4
-                        }}
+                        style={styles.fab}
                     >
-                        <Text style={styles.footerIconText}> Save </Text>
-                    </TouchableHighlight>
+                        <Icon
+                            name='check'
+                            size={30}
+                            color='white'
+                            style={styles.fabIcon}
+                        />
+                    </ColoredFab>
                 </View>
             </View>
         )

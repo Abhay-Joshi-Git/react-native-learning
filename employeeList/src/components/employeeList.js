@@ -7,21 +7,12 @@ import {
     StyleSheet
 } from 'react-native';
 import _ from 'lodash';
-import listStyle from '../CommonStyles/list.js';
 import { connect } from 'react-redux';
 import { addEmployee } from '../../redux/actions';
-import {
-  MKButton,
-  MKColor,
-} from 'react-native-material-kit';
+import * as MK from 'react-native-material-kit';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-const FlatButton = MKButton.flatButton()
-  .withText('BUTTON')
-  .build();
-const ColoredFab = MKButton.coloredFab()
-   .withStyle()
-   .build();
+import listStyle from '../CommonStyles/list.js';
+import { MKTheme } from '../CommonStyles/common.js';
 
 class EmployeeList extends React.Component {
     constructor(props) {
@@ -56,15 +47,20 @@ class EmployeeList extends React.Component {
 
     render() {
         return (
-            <View>
+            <View style={styles.mainContainer}>
                 <View style={styles.header}>
-                    <TouchableHighlight
-                     style={styles.headerIconContainer}
-                     onPress={this.onBackButtonPressed.bind(this)}
-                     underlayColor='gray'
-                    >
-                        <Text style={styles.iconText}> {'<'} </Text>
-                    </TouchableHighlight>
+                    <View style={styles.headerIconContainer}>
+                        <Icon
+                            style={{
+                                justifyContent: 'center',
+                                marginLeft: 3
+                            }}
+                            name='arrow-left'
+                            size={18}
+                            color='white'
+                            onPress={this.onBackButtonPressed.bind(this)}
+                        />
+                    </View>
                     <View style={styles.headerTextContainer}>
                         <Text style={styles.headerText}>
                             Employee List
@@ -72,26 +68,22 @@ class EmployeeList extends React.Component {
                     </View>
                 </View>
                 {this.getEmployeeListView()}
-                <TouchableHighlight
-                    style={styles.footer}
+                <ColoredFab
                     onPress={this.onAddEmployeePress.bind(this)}
-                    underlayColor='gray'
+                    style={styles.footerFab}
                 >
-                    <View>
-                        <ColoredFab>
-                            <Icon name='plus' size={30} color='lime' />
-                        </ColoredFab>
-                    </View>
-                </TouchableHighlight>
+                    <Icon
+                        name='plus'
+                        size={30}
+                        color='white'
+                        style={styles.fabIcon}
+                    />
+                </ColoredFab>
             </View>
         )
     }
 
     onAddEmployeePress() {
-        // this.props.addEmployee({
-        //     name: 'Tom',
-        //     department: 'manufacturing'
-        // });
         this.props.navigator.push({
             name: 'employeeDetails',
             employee: {
@@ -114,7 +106,8 @@ class EmployeeList extends React.Component {
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={this.renderEmployeeRow.bind(this)}
-                    >
+                    contentContainerStyle={{justifyContent: 'flex-start'}}
+                >
                 </ListView>
             );
         }
@@ -150,6 +143,19 @@ class EmployeeList extends React.Component {
 }
 
 var styles = StyleSheet.create(listStyle);
+const { MKButton } = MK;
+
+console.log(MKTheme);
+
+MK.setTheme(MKTheme);
+
+const FlatButton = MKButton.flatButton()
+  .withText('BUTTON')
+  .build();
+const ColoredFab = MKButton.accentColoredFab()
+   .withStyle()
+   .build();
+
 
 const mapStateToProps = (state) => {
     return {
