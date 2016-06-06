@@ -7,6 +7,12 @@ export const MKTheme = {
   accentColor: MKColor.Red,
 };
 
+
+export const otherStyles = {
+    headerIconSize: 24
+}
+
+
 const fab = {
     height: 50,
     width: 50
@@ -42,7 +48,7 @@ export default {
         height: 50
     },
     headerIconContainer: {
-        flex: 1,
+        flex: 2,
         justifyContent: 'center'
     },
     iconText: {

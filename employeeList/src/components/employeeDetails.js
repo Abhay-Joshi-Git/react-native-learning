@@ -7,16 +7,19 @@ import {
     TextInput,
     TouchableHighlight
 } from 'react-native';
-import commonStyles from '../CommonStyles/common.js';
+import commonStyles, { otherStyles } from '../CommonStyles/common.js';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions';
 import _ from 'lodash';
 import { MKButton } from 'react-native-material-kit';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import BackButtonIcon from './backButtonIcon.js';
 
 const ColoredFab = MKButton.accentColoredFab()
    .withStyle()
    .build();
+
+const Fab = MKButton.plainFab().build();
 
 class EmployeeDetails extends React.Component {
     constructor(props) {
@@ -34,18 +37,9 @@ class EmployeeDetails extends React.Component {
         return (
             <View style={styles.mainContainer}>
                 <View style={styles.header}>
-                    <View style={styles.headerIconContainer}>
-                        <Icon
-                            style={{
-                                justifyContent: 'center',
-                                marginLeft: 3
-                            }}
-                            name='arrow-left'
-                            size={18}
-                            color='white'
-                            onPress={this.onBackButtonPressed.bind(this)}
-                        />
-                    </View>
+                    <BackButtonIcon
+                        onPress={this.onBackButtonPressed.bind(this)}
+                    />
                     <View style={styles.headerTextContainer}>
                         <Text style={styles.headerText}>
                             Employee Details
@@ -72,22 +66,46 @@ class EmployeeDetails extends React.Component {
                         />
                     </View>
                 </View>
-                <View style={{
-                        alignItems: 'center',
-                        marginTop: 10
-                    }}>
-                    <ColoredFab
-                        onPress={this.onSavePress.bind(this)}
-                        style={styles.fab}
-                    >
-                        <Icon
-                            name='check'
-                            size={30}
-                            color='white'
-                            style={styles.fabIcon}
-                        />
-                    </ColoredFab>
-                </View>
+                {this.getSaveEmployeeButtonUI()}
+            </View>
+        )
+    }
+
+    getSaveEmployeeButtonUI() {
+    //ToDo: here Icon and props are getting repeated, fetch it as a separate component and
+    // props as props and Icon as children
+        
+        return (
+            <View style={{
+                    alignItems: 'center',
+                    marginTop: 10
+                }}>
+                {
+                    this.state.employee.name ?
+                    (<ColoredFab
+                            onPress={this.onSavePress.bind(this)}
+                            style={styles.fab}
+                            disabled={!this.state.employee.name}
+                        >
+                            <Icon
+                                name='check'
+                                size={30}
+                                color={this.state.employee.name ? 'white' : 'gray'}
+                                style={styles.fabIcon}
+                            />
+                    </ColoredFab>) : (<Fab
+                            onPress={this.onSavePress.bind(this)}
+                            style={styles.fab}
+                            disabled={!this.state.employee.name}
+                        >
+                            <Icon
+                                name='check'
+                                size={30}
+                                color={this.state.employee.name ? 'white' : 'gray'}
+                                style={styles.fabIcon}
+                            />
+                    </Fab>)
+                }
             </View>
         )
     }

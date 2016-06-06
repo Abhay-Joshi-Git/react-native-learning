@@ -13,7 +13,8 @@ import { addEmployee } from '../../redux/actions';
 import * as MK from 'react-native-material-kit';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import listStyle from '../CommonStyles/list.js';
-import { MKTheme } from '../CommonStyles/common.js';
+import { MKTheme, otherStyles } from '../CommonStyles/common.js';
+import BackButtonIcon from './backButtonIcon.js';
 
 class EmployeeList extends React.Component {
     constructor(props) {
@@ -34,7 +35,7 @@ class EmployeeList extends React.Component {
                 return props.employees.filter(item => {
                     return ((item.department === filter.department) &&
                         (!(searchEmployeeText) ||
-                            item.name.includes(searchEmployeeText))
+                            item.name.toLowerCase().includes(searchEmployeeText.toLowerCase()))
                     )
                 })
             }
@@ -58,22 +59,11 @@ class EmployeeList extends React.Component {
         return (
             <View style={styles.mainContainer}>
                 <View style={styles.header}>
-                    <View style={styles.headerIconContainer}>
-                        <Icon
-                            style={{
-                                justifyContent: 'center',
-                                marginLeft: 3
-                            }}
-                            name='arrow-left'
-                            size={18}
-                            color='white'
-                            onPress={this.onBackButtonPressed.bind(this)}
-                        />
-                    </View>
+                    <BackButtonIcon onPress={this.onBackButtonPressed.bind(this)}/>
                     <View style={styles.headerTextContainer}>
                         {this.getHeaderTextUI()}
                     </View>
-                    {this.getSeatchIconUI()}
+                    {this.getSearchIconUI()}
                 </View>
                 {this.getEmployeeListView()}
                 <ColoredFab
@@ -91,14 +81,14 @@ class EmployeeList extends React.Component {
         )
     }
 
-    getSeatchIconUI() {
+    getSearchIconUI() {
         return (
             <View style={styles.headerIconContainer}>
                 {
                     !this.state.searchBoxShowing ?
                     <Icon
                         name='search'
-                        size={18}
+                        size={otherStyles.headerIconSize}
                         color='white'
                         onPress={this.onSearchPressed.bind(this)}
                         style={{
