@@ -34,6 +34,18 @@ class EmployeeDetails extends React.Component {
         return (
             <View style={styles.mainContainer}>
                 <View style={styles.header}>
+                    <View style={styles.headerIconContainer}>
+                        <Icon
+                            style={{
+                                justifyContent: 'center',
+                                marginLeft: 3
+                            }}
+                            name='arrow-left'
+                            size={18}
+                            color='white'
+                            onPress={this.onBackButtonPressed.bind(this)}
+                        />
+                    </View>
                     <View style={styles.headerTextContainer}>
                         <Text style={styles.headerText}>
                             Employee Details
@@ -101,6 +113,10 @@ class EmployeeDetails extends React.Component {
                 department: text
             }
         })
+    }
+
+    onBackButtonPressed() {
+        this.props.navigator.pop();
     }
 }
 
