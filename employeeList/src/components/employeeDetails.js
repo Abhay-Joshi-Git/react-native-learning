@@ -11,15 +11,8 @@ import commonStyles, { otherStyles } from '../CommonStyles/common.js';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions';
 import _ from 'lodash';
-import { MKButton } from 'react-native-material-kit';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import BackButtonIcon from './backButtonIcon.js';
-
-const ColoredFab = MKButton.accentColoredFab()
-   .withStyle()
-   .build();
-
-const Fab = MKButton.plainFab().build();
+import SaveFab from './saveFab.js';
 
 class EmployeeDetails extends React.Component {
     constructor(props) {
@@ -72,40 +65,15 @@ class EmployeeDetails extends React.Component {
     }
 
     getSaveEmployeeButtonUI() {
-    //ToDo: here Icon and props are getting repeated, fetch it as a separate component and
-    // props as props and Icon as children
-        
         return (
             <View style={{
                     alignItems: 'center',
                     marginTop: 10
                 }}>
-                {
-                    this.state.employee.name ?
-                    (<ColoredFab
-                            onPress={this.onSavePress.bind(this)}
-                            style={styles.fab}
-                            disabled={!this.state.employee.name}
-                        >
-                            <Icon
-                                name='check'
-                                size={30}
-                                color={this.state.employee.name ? 'white' : 'gray'}
-                                style={styles.fabIcon}
-                            />
-                    </ColoredFab>) : (<Fab
-                            onPress={this.onSavePress.bind(this)}
-                            style={styles.fab}
-                            disabled={!this.state.employee.name}
-                        >
-                            <Icon
-                                name='check'
-                                size={30}
-                                color={this.state.employee.name ? 'white' : 'gray'}
-                                style={styles.fabIcon}
-                            />
-                    </Fab>)
-                }
+                <SaveFab
+                    disabled={!this.state.employee.name}
+                    onSavePress={this.onSavePress.bind(this)}
+                />
             </View>
         )
     }
@@ -138,14 +106,7 @@ class EmployeeDetails extends React.Component {
     }
 }
 
-
-var styles = StyleSheet.create({
-    ...commonStyles,
-    footerIconText: {
-        ...commonStyles.footerIconText,
-        fontSize: 15
-    }
-})
+var styles = StyleSheet.create(commonStyles)
 
 export default connect(
     null,
