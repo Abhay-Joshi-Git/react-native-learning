@@ -23,7 +23,12 @@ export default class App extends React.Component {
     render() {
         return (
             <Navigator
-                initialRoute={{name: 'departments'}}
+                initialRoute={{
+                            name: 'employees',
+                            filter: {
+                                department: 'manufacturing'
+                            }
+                        }}
                 renderScene={this.renderScene}
             />
         );

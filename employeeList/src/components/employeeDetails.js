@@ -55,7 +55,11 @@ class EmployeeDetails extends React.Component {
                             style={styles.input}
                             editable={false}
                             placeholder={this.state.employee.department ?
-                                this.state.employee.department : 'Department'}
+                                        this.state.employee.department : 'Department'}
+                            placeholderStyle={{
+                                opacity: 0.4,
+                                color: 'blue'
+                            }}
                         />
                     </View>
                 </View>

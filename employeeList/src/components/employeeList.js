@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import listStyle from '../CommonStyles/list.js';
 import { MKTheme, otherStyles } from '../CommonStyles/common.js';
 import BackButtonIcon from './backButtonIcon.js';
+import Orientation from 'react-native-orientation';
 
 class EmployeeList extends React.Component {
     constructor(props) {
@@ -24,18 +25,37 @@ class EmployeeList extends React.Component {
         this.state = {
             employeesFilteredData: filteredData,
             dataSource: ds.cloneWithRows(filteredData),
-            searchBoxShowing:  false
+            searchBoxShowing: false,
+            orientation: 'LANDSCAPE',
+            searchText: ''
         }
     }
 
-    getFilteredEmployeesData(props, searchEmployeeText) {
+    componentWillMount() {
+        console.log('Orientation -- ',  Orientation);
+        this.setState({
+            orientation: Orientation.getInitialOrientation()
+        })
+    }
+
+    componentDidMount() {
+        Orientation.addOrientationListener(this.orientationDidChange.bind(this));
+    }
+
+    orientationDidChange(UpdatedOrientation) {
+        this.setState({
+            orientation: UpdatedOrientation
+        })
+    }
+
+    getFilteredEmployeesData(props, searchText) {
         if (props.route && props.route.filter) {
             var filter = props.route.filter;
             if (filter.department) {
                 return props.employees.filter(item => {
                     return ((item.department === filter.department) &&
-                        (!(searchEmployeeText) ||
-                            item.name.toLowerCase().includes(searchEmployeeText.toLowerCase()))
+                        (!(searchText) ||
+                            item.name.toLowerCase().includes(searchText.toLowerCase()))
                     )
                 })
             }
@@ -44,11 +64,11 @@ class EmployeeList extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setFilteredEmployeeState(nextProps, this.state.searchEmployeeText)
+        this.setFilteredEmployeeState(nextProps, this.state.searchText)
     }
 
-    setFilteredEmployeeState(props, searchEmployeeText) {
-        var filteredData = this.getFilteredEmployeesData(props, searchEmployeeText);
+    setFilteredEmployeeState(props, searchText) {
+        var filteredData = this.getFilteredEmployeesData(props, searchText);
         this.setState({
             employeesFilteredData: filteredData,
             dataSource: this.state.dataSource.cloneWithRows(filteredData)
@@ -125,9 +145,11 @@ class EmployeeList extends React.Component {
                     <TextInput
                         autoFocus={true}
                         placeholder={'Search Employee...'}
+                        value={this.state.searchText}
                         onChangeText={this.onSeachTextChange.bind(this)}
-                        style={[styles.headerText, styles.input, {
-                            fontSize: 20
+                        style={[styles.input, {
+                            fontSize: 20,
+                            color: (this.state.orientation === 'LANDSCAPE') ? 'black' : 'white'
                         }]}
                     />
                 </View>
@@ -169,7 +191,7 @@ class EmployeeList extends React.Component {
 
     onSeachTextChange(text) {
         this.setState({
-            searchEmployeeText: text
+            searchText: text
         });
         this.setFilteredEmployeeState(this.props, text)
     }
@@ -178,7 +200,7 @@ class EmployeeList extends React.Component {
         if (this.state.searchBoxShowing) {
             this.setState({
                 searchBoxShowing: false,
-                searchEmployeeText: ''
+                searchText: ''
             })
         } else {
             this.props.navigator.pop();

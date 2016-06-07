@@ -9,7 +9,8 @@ export const MKTheme = {
 
 
 export const otherStyles = {
-    headerIconSize: 24
+    headerIconSize: 24,
+    headerBackGroundColor: 'teal'
 }
 
 
@@ -40,7 +41,7 @@ export default {
     },
     header: {
         flexDirection: 'row',
-        backgroundColor: 'teal'
+        backgroundColor: otherStyles.headerBackGroundColor
     },
     headerTextContainer: {
         flex: 15,
