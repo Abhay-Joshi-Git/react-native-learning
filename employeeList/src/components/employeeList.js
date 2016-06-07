@@ -32,7 +32,6 @@ class EmployeeList extends React.Component {
     }
 
     componentWillMount() {
-        console.log('Orientation -- ',  Orientation);
         this.setState({
             orientation: Orientation.getInitialOrientation()
         })
@@ -234,8 +233,6 @@ class EmployeeList extends React.Component {
 
 var styles = StyleSheet.create(listStyle);
 const { MKButton } = MK;
-
-console.log(MKTheme);
 
 MK.setTheme(MKTheme);
 
