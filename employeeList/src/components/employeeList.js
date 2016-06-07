@@ -201,6 +201,7 @@ class EmployeeList extends React.Component {
                 searchBoxShowing: false,
                 searchText: ''
             })
+            this.setFilteredEmployeeState(this.props, '')
         } else {
             this.props.navigator.pop();
         }
